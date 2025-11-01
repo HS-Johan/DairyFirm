@@ -16,13 +16,12 @@ namespace DairyFirm.Controllers
 
         // POST: Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(VaccineInfo vaccineInfo)
+        public IActionResult Create([FromBody] VaccineInfo vaccineInfo)
         {
             _context.VaccineInfos.Add(vaccineInfo);
             _context.SaveChanges();
 
-            return Json("");
+            return Json("Vaccine Created Successfully.");
         }
 
         // GET: List
@@ -30,12 +29,17 @@ namespace DairyFirm.Controllers
         {
             var allVaccine = _context.VaccineInfos.ToList();
 
-            return Json("");
+            return Json(allVaccine);
         }
 
         // GET: Details
         public IActionResult Details(int id)
         {
+            if(id <= 0)
+            {
+                return NotFound();
+            }
+
             var vaccine = _context.VaccineInfos.FirstOrDefault(x=> x.VaccineId == id);
 
             if (vaccine == null)
@@ -43,12 +47,17 @@ namespace DairyFirm.Controllers
                 return NotFound();
             }
 
-            return Json("");
+            return Json(vaccine);
         }
 
         // GET: Edit
         public IActionResult Edit(int id)
         {
+            if( id <= 0 )
+            {
+                return NotFound();
+            }
+
             var vaccine = _context.VaccineInfos.FirstOrDefault(x => x.VaccineId == id);
 
             if (vaccine == null)
@@ -56,18 +65,17 @@ namespace DairyFirm.Controllers
                 return NotFound();
             }
 
-            return Json("");
+            return Json(vaccine);
         }
 
         // POST: Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(VaccineInfo vaccineInfo)
+        public IActionResult Edit([FromBody] VaccineInfo vaccineInfo)
         {
             _context.VaccineInfos.Update(vaccineInfo);
             _context.SaveChanges();
 
-            return Json("");
+            return Json("Vaccine Updated Successfully.");
         }
 
         // Delete
